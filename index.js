@@ -95,52 +95,6 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-//if user uses /vraag command check if channel name #vraag-van-de-dag and #antwoord-van-de-dag exists if not create them
-
-client.on("messageCreate", async (message) => {
-    if (message.content === "/vvdd") {
-        const guild = client.guilds.cache.get(guildID);
-        const vraagChannel = guild.channels.cache.find(
-        (channel) => channel.name === "vraag-van-de-dag"
-        );
-        const antwoordChannel = guild.channels.cache.find(
-        (channel) => channel.name === "antwoord-van-de-dag"
-        );
-    
-        if (!vraagChannel) {
-        guild.channels.create( {
-            name: "vraag-van-de-dag",
-            type: ChannelType.GuildText,
-            //read only for everyone
-            permissionOverwrites: [
-            {
-                id: guild.roles.everyone,
-                allow: [],
-                deny: [PermissionsBitField.SendMessages],
-            },
-            ],
-           
-        });
-        }
-    
-        if (!antwoordChannel) {
-        guild.channels.create( {
-            name: "antwoord-van-de-dag",
-            type: ChannelType.GuildText,
-            //allow everyone to read and write
-            permissionOverwrites: [
-            {
-                id: guild.roles.everyone,
-                allow: [PermissionsBitField.SendMessages],
-                deny: [],
-            },
-            ],
-          
-        });
-        }
-    }
-    }
-);
 
 
 
