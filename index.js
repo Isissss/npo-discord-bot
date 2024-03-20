@@ -1,107 +1,148 @@
-const { EmbedBuilder } = require("@discordjs/builders");
-const { Permissions } = require("discord.js");
-const { Collection } = require("discord.js");
-const fs = require("fs");
-const { config } = require("dotenv");
-const { Client, GatewayIntentBits, PermissionsBitField, Routes, ActivityType, SlashCommandBuilder } = require("discord.js");
-const { REST } = require("@discordjs/rest");
+import {
+  Client,
+  GatewayIntentBits,
+  PermissionsBitField,
+  Routes,
+  ActivityType,
+  SlashCommandBuilder,
+  Collection,
+  ChannelType,
+  EmbedBuilder,
+} from "discord.js";
+import dotenv from "dotenv";
+import { REST } from "@discordjs/rest";
+import fs from "fs";
 
-const prefix = "/";
-const commands = [];
-
-config();
-
-const token = process.env.TOKEN;
-const clientID = process.env.CLIENT_ID;
-const guildID = process.env.GUILD_ID;
-
-const rest = new REST({
-    version: '9'
-
-}).setToken(token);
-
+dotenv.config();
 
 const client = new Client({
-    allowedMentions: {
-        parse: ['users', 'roles'],
-        repliedUser: true
-    },
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
 
-    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessageReactions, GatewayIntentBits.GuildMessageTyping]
+  ],
+});
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
+const commands = [];
+const clientId = process.env.CLIENT_ID;
+const guildID = process.env.GUILD_ID;
 
+client.once("ready", () => {
+
+  client.user.setPresence({
+    activities: [
+      {
+        name: "SchoolTV",
+        type: ActivityType.Watching,
+      },
+    ],
+    status: "online",
+  });
+
+  console.log("Ready!");
 });
 
-
-client.on ('ready', () => {
-    console.log('The client is ready!');
-   client.user.setPresence({
-         activities: [{
-                name: 'SchoolTV',
-                type: ActivityType.Watching
-            }],
-            status: 'online'
-        });
-});
-client.login(token)
+client.login(process.env.TOKEN);
 
 client.slashCommands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
-for(const file of commandFiles){
-    const command = require(`./commands/${file}`);
-    client.slashCommands.set(command.data.name, command);
-    commands.push(command.data.toJSON());
+//fs loop through commands folder es6 so without require
+const commandFiles = fs
+  .readdirSync("./src/commands")
+  .filter((file) => file.endsWith(".js"));
+for (const file of commandFiles) {
+  const command = await import(`./src/commands/${file}`);
+  client.slashCommands.set(command.data.name, command);
+  commands.push(command.data.toJSON());
+}
+
+async function main() {
+  try {
+
+    console.log("Started refreshing application (/) commands.");
+    await rest.put(Routes.applicationCommands(clientId), {
+      body: commands,
+    });
+
+    console.log("Successfully reloaded application (/) commands.");
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 
-async function main(){
-    try{
-        console.log('Started refreshing application (/) commands.');
-        await rest.put(
-            Routes.applicationGuildCommands(clientID, guildID),
-            {body: commands}
-        );
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) return;
 
-        console.log('Successfully reloaded application (/) commands.');
-    } catch (error){
-        console.error(error);
-    }
-}
-main();
+  const { commandName } = interaction;
 
+  const command = client.slashCommands.get(commandName);
 
-client.on('interactionCreate', async interaction => {
-    if(!interaction.isCommand()) return;
+  if (!command) return;
 
-    const {commandName} = interaction;
-    const command = client.slashCommands.get(commandName);
+  try {
+    await command.execute(interaction);
+  } catch (error) {
+    console.error(error);
+    await interaction.reply({
+      content: "There was an error while executing this command!",
+      ephemeral: true,
+    });
 
 
-
-    if(!command) return;
-
-    try{
-        await command.execute(interaction);
-    } catch (error){
-        console.error(error);
-        await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
-    }
+  }
 });
 
+//if user uses /vraag command check if channel name #vraag-van-de-dag and #antwoord-van-de-dag exists if not create them
+
+client.on("messageCreate", async (message) => {
+    if (message.content === "/vvdd") {
+        const guild = client.guilds.cache.get(guildID);
+        const vraagChannel = guild.channels.cache.find(
+        (channel) => channel.name === "vraag-van-de-dag"
+        );
+        const antwoordChannel = guild.channels.cache.find(
+        (channel) => channel.name === "antwoord-van-de-dag"
+        );
+    
+        if (!vraagChannel) {
+        guild.channels.create( {
+            name: "vraag-van-de-dag",
+            type: ChannelType.GuildText,
+            //read only for everyone
+            permissionOverwrites: [
+            {
+                id: guild.roles.everyone,
+                allow: [],
+                deny: [PermissionsBitField.SendMessages],
+            },
+            ],
+           
+        });
+        }
+    
+        if (!antwoordChannel) {
+        guild.channels.create( {
+            name: "antwoord-van-de-dag",
+            type: ChannelType.GuildText,
+            //allow everyone to read and write
+            permissionOverwrites: [
+            {
+                id: guild.roles.everyone,
+                allow: [PermissionsBitField.SendMessages],
+                deny: [],
+            },
+            ],
+          
+        });
+        }
+    }
+    }
+);
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+main();
