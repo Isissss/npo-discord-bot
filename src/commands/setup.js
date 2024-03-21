@@ -9,6 +9,7 @@ import {
   ChannelType,
   EmbedBuilder,
 } from "discord.js";
+import { roles } from "../roles.js";
 
 export const data = new SlashCommandBuilder()
   .setName("setup")
@@ -31,7 +32,7 @@ export async function execute(interaction) {
       content: "NPO categorie is aangemaakt",
       ephemeral: true,
     });
-  } else {
+  } 
     //check if channel 'nieuw' exists
     const newsChannel = guild.channels.cache.find(
       (channel) => channel.name === "nieuws"
@@ -56,12 +57,7 @@ export async function execute(interaction) {
           },
         ],
       });
-    } else {
-      interaction.reply({
-        content: "Nieuws kanaal bestaat al",
-        ephemeral: true,
-      });
-    }
+    } 
     if (!rolesChannel) {
       guild.channels.create({
         name: "rollen",
@@ -78,13 +74,21 @@ export async function execute(interaction) {
           },
         ],
       });
-    } else {
-      interaction.reply({
-        content: "Rollen kanaal bestaat al",
-        ephemeral: true,
-      });
-    }
+    } 
+      const role = guild.roles.cache.find((role) => role.name === 'Oorlog');
+      if (!role) {
+        await roles({ guild });
+      }
 
-    interaction.reply({ content: "NPO categorie bestaat al", ephemeral: true });
-  }
+      
+    
+    
+      
+    interaction.reply('NPO setup is voltooid');
+
+
+
+
+
+  
 }

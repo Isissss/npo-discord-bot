@@ -4,7 +4,7 @@ import { SlashCommandBuilder, EmbedBuilder } from '@discordjs/builders';
 
 export const data = new SlashCommandBuilder()
     .setName('help')
-    .setDescription('Laat alle commands zien');
+    .setDescription('Laat alle commands zien'); 
 
 export async function execute(interaction) {
     const embed = new EmbedBuilder()

@@ -27,8 +27,9 @@ export async function gpt() {
         }
 
     )
-    console.log(completion.choices[0].message.content)
-    return completion.choices[0].message.content
+const data = JSON.parse(completion.choices[0].message.content)
+
+    return data;
     
       
 }
