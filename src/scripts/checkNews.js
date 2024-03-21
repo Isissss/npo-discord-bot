@@ -17,25 +17,15 @@ import {
 
 
 
- export async function checkNews() {
+ export async function checkNews(channel) {
     const hashes = JSON.parse(fs.readFileSync('./hashes.json')); 
-    const client = new Client({
-        intents: [
-          GatewayIntentBits.Guilds,
-          GatewayIntentBits.GuildMessages,
-          GatewayIntentBits.GuildMembers,
-          GatewayIntentBits.GuildMessageReactions,
-          GatewayIntentBits.MessageContent,
-        ],
-      });
+
 
     const [national, sport, international] = await Promise.all([
         fetchNewsFromNos('https://nos.nl/nieuws/binnenland', 'Binnenland'),
         fetchNewsFromNos('https://nos.nl/sport/laatste', 'Sport'),
         fetchNewsFromNos('https://nos.nl/nieuws/buitenland', 'Buitenland')
     ]);
-    const channel = client.channels.cache.find(c => c.name === "nieuws");
-    if (!channel) return console.log("Channel not found"); 
 
     const sendNews = (data, tag) => {
         const hash = crypto.createHash('sha256').update(data.text).digest('hex');

@@ -11,6 +11,7 @@ import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";
+import { time } from "console";
 
 dotenv.config();
 
@@ -66,6 +67,8 @@ async function main() {
     console.error(error);
   }
 }
+main();
+
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.isButton() && interaction.channel.name == "rollen")
@@ -90,7 +93,23 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-setInterval(checkTime, 60000);
-setInterval(checkNews, 60000);
+function findChannel(name) {
+  return client.channels.cache.find((channel) => channel.name === name);
+}
 
-main();
+const newsChannel = findChannel("nieuws");
+const timeChannel = findChannel("vraag-van-de-dag");
+
+
+function executeTimedScripts() {
+    checkNews(newsChannel);
+    checkTime(timeChannel);
+}
+
+
+setInterval(executeTimedScripts, 60000);
+
+
+
+
+

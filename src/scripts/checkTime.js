@@ -17,26 +17,14 @@ import {
 
 
 
-export async function checkTime() {
+export async function checkTime(channel) {
     const date = new Date();
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    const client = new Client({
-        intents: [
-          GatewayIntentBits.Guilds,
-          GatewayIntentBits.GuildMessages,
-          GatewayIntentBits.GuildMembers,
-          GatewayIntentBits.GuildMessageReactions,
-          GatewayIntentBits.MessageContent,
-        ],
-      });
 
     console.log(hours, minutes);
     if (hours === 15 && minutes === 0) {
-      //find a channel called vraag-van-de-dag
-      const channel = client.channels.cache.find(
-        (channel) => channel.name === "vraag-van-de-dag"
-      );
+      
   
       if (!channel) {
         console.log("Channel not found");
