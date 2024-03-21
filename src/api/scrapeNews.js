@@ -9,6 +9,7 @@ export async function nationalNews() {
           '--disable-setuid-sandbox'
         ]
       });
+      
     const page = await browser.newPage();
     let href, src, text;
     let tag = 'Binnenland';
