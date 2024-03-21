@@ -11,7 +11,6 @@ import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";
-import { time } from "console";
 
 dotenv.config();
 
@@ -27,6 +26,8 @@ const client = new Client({
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 const commands = [];
 const clientId = process.env.CLIENT_ID;
+let nieuwsChannel;
+let vraagChannel;
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -40,6 +41,12 @@ client.once("ready", () => {
   });
 
   console.log("Ready!");
+  nieuwsChannel = client.channels.cache.find(
+    (channel) => channel.name === "nieuws"
+  );
+  vraagChannel = client.channels.cache.find(
+    (channel) => channel.name === "vraag-van-de-dag"
+  );
 });
 client.login(process.env.TOKEN);
 
@@ -67,8 +74,6 @@ async function main() {
     console.error(error);
   }
 }
-main();
-
 
 client.on("interactionCreate", async (interaction) => {
   if (interaction.isButton() && interaction.channel.name == "rollen")
@@ -93,23 +98,13 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-function findChannel(name) {
-  return client.channels.cache.find((channel) => channel.name === name);
-}
-
-const newsChannel = findChannel("nieuws");
-const timeChannel = findChannel("vraag-van-de-dag");
-
-
 function executeTimedScripts() {
-    checkNews(newsChannel);
-    checkTime(timeChannel);
+  if (nieuwsChannel && vraagChannel) {
+    checkTime(vraagChannel);
+    checkNews(nieuwsChannel);
+  }
 }
-
 
 setInterval(executeTimedScripts, 60000);
 
-
-
-
-
+main();
