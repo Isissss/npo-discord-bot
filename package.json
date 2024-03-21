@@ -12,5 +12,8 @@
   "type": "module",
   "nodemonConfig": {
     "ignore": ["*.json"]
+  },
+  "scripts": {
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
   }
 }
