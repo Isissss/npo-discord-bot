@@ -3,7 +3,12 @@ import puppeteer from 'puppeteer';
 
 export async function nationalNews() {
 	const url = `https://nos.nl/nieuws/binnenland`;
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        'args' : [
+          '--no-sandbox',
+          '--disable-setuid-sandbox'
+        ]
+      });
     const page = await browser.newPage();
     let href, src, text;
     let tag = 'Binnenland';
@@ -33,8 +38,12 @@ export async function nationalNews() {
 
 export async function sportNews() {
         const url = `https://nos.nl/sport/laatste`;
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+        const browser = await puppeteer.launch({
+            'args' : [
+              '--no-sandbox',
+              '--disable-setuid-sandbox'
+            ]
+          });        const page = await browser.newPage();
         let href, src, text;
         let tag = 'Sport';
         await page.goto(url);
