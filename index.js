@@ -28,6 +28,7 @@ const commands = [];
 const clientId = process.env.CLIENT_ID;
 let nieuwsChannel;
 let vraagChannel;
+let antwoordChannel;
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -47,6 +48,9 @@ client.once("ready", () => {
   vraagChannel = client.channels.cache.find(
     (channel) => channel.name === "vraag-van-de-dag"
   );
+    antwoordChannel = client.channels.cache.find(
+        (channel) => channel.name === "antwoord-van-de-dag"
+    );
 });
 client.login(process.env.TOKEN);
 
@@ -96,6 +100,23 @@ client.on("interactionCreate", async (interaction) => {
       ephemeral: true,
     });
   }
+});
+
+
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+
+    if (message.channel.name === "antwoord-van-de-dag") {
+        const answer = JSON.parse(fs.readFileSync('answer.json', 'utf-8'));
+        if (message.content.toLowerCase().includes(answer.toLowerCase())) {
+            //if user allows DM
+            message.author.send({ content: 'Gefeliciteerd, dat is het juiste antwoord! Je hebt een punt verdiend.', ephemeral: true });
+        }
+        else {
+            message.author.send({ content: 'Helaas, dat is niet het juiste antwoord. Probeer het nog een keer.', ephemeral: true });
+        }
+
+    }
 });
 
 function executeTimedScripts() {
