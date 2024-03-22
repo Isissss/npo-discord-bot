@@ -19,7 +19,6 @@ import crypto from "crypto";
 export async function checkNews(channel) {
   const hashes = JSON.parse(fs.readFileSync("./hashes.json"));
 
-
   const [national, sport, international] = await Promise.all([
     fetchNewsFromNos("https://nos.nl/nieuws/binnenland", "Binnenland"),
     fetchNewsFromNos("https://nos.nl/sport/laatste", "Sport"),

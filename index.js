@@ -127,6 +127,6 @@ function executeTimedScripts() {
   }
 }
 
-//setInterval(executeTimedScripts, 60000);
+setInterval(executeTimedScripts, 60000);
 
 main();
