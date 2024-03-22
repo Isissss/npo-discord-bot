@@ -10,7 +10,8 @@ import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
-import { addRole } from "./src/scripts/addRole.js";
+import { addRole } from "./src/scripts/addRole.js"; 
+import { getHash, insertHash } from "./src/schemas/hashes.js";
 
 dotenv.config();
 
@@ -126,6 +127,6 @@ function executeTimedScripts() {
   }
 }
 
-setInterval(executeTimedScripts, 60000);
+//setInterval(executeTimedScripts, 60000);
 
 main();
