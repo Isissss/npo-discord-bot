@@ -2,13 +2,16 @@
 
 import { SlashCommandBuilder, EmbedBuilder } from '@discordjs/builders';
 import { gpt } from '../api/gpt.js';
+import fs from 'fs';
 
 
 export const data = new SlashCommandBuilder()
-    .setName('vraag')
+    .setName('test')
     .setDescription('Vraag van de dag');
 
 export async function execute(interaction) {
+    await interaction.deferReply(); 
+
     const response = await gpt();
 
     const embed = new EmbedBuilder()
@@ -20,7 +23,10 @@ export async function execute(interaction) {
         .setTimestamp();
 
     //send message no reply
-    interaction.reply({embeds: [embed]});
+    interaction.editReply({embeds: [embed]});
+
+    fs.writeFileSync('answer.json', JSON.stringify(response.antwoord, null, 2), 'utf-8')
+
 
 }
 
