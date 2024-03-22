@@ -11,6 +11,8 @@ import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";
+import { db } from "./src/db/db.js";
+import { tests } from "./src/schemas/test.js";
 
 dotenv.config();
 
@@ -46,8 +48,11 @@ client.once("ready", () => {
   );
   vraagChannel = client.channels.cache.find(
     (channel) => channel.name === "vraag-van-de-dag"
-  );
+  ); 
+   
 });
+ 
+
 client.login(process.env.TOKEN);
 
 client.slashCommands = new Collection();
@@ -105,6 +110,6 @@ function executeTimedScripts() {
   }
 }
 
-setInterval(executeTimedScripts, 60000);
+//setInterval(executeTimedScripts, 60000);
 
 main();
