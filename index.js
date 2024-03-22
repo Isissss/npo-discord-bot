@@ -10,9 +10,8 @@ import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
-import { addRole } from "./src/scripts/addRole.js";
-import { db } from "./src/db/db.js";
-import { tests } from "./src/schemas/test.js";
+import { addRole } from "./src/scripts/addRole.js"; 
+import { getHash, insertHash } from "./src/schemas/hashes.js";
 
 dotenv.config();
 
@@ -49,9 +48,8 @@ client.once("ready", () => {
   vraagChannel = client.channels.cache.find(
     (channel) => channel.name === "vraag-van-de-dag"
   ); 
-   
-});
- 
+    
+}); 
 
 client.login(process.env.TOKEN);
 
