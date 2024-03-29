@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1711109160510,
-      "tag": "0000_lying_yellow_claw",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1711109475037,
-      "tag": "0001_hesitant_firelord",
+      "when": 1711669010373,
+      "tag": "0000_dusty_ravenous",
       "breakpoints": true
     }
   ]

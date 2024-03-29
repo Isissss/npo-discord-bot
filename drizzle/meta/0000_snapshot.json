@@ -1,11 +1,51 @@
 {
-  "id": "0b5f2b3d-3882-4662-abdd-65e559ef2812",
+  "id": "7b1325cd-b427-4167-b590-d0eb7547835e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
   "tables": {
-    "tests": {
-      "name": "tests",
+    "guildSettings": {
+      "name": "guildSettings",
+      "schema": "",
+      "columns": {
+        "guildId": {
+          "name": "guildId",
+          "type": "varchar(256)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "webhookURL": {
+          "name": "webhookURL",
+          "type": "varchar(512)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "newsChannelID": {
+          "name": "newsChannelID",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "rolesChannelID": {
+          "name": "rolesChannelID",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "announcementsChannelID": {
+          "name": "announcementsChannelID",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "hashes": {
+      "name": "hashes",
       "schema": "",
       "columns": {
         "id": {
@@ -14,15 +54,9 @@
           "primaryKey": true,
           "notNull": true
         },
-        "hallo": {
-          "name": "hallo",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "world": {
-          "name": "world",
-          "type": "text",
+        "hash": {
+          "name": "hash",
+          "type": "varchar(256)",
           "primaryKey": false,
           "notNull": false
         }

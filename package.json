@@ -21,7 +21,7 @@
   },
   "scripts": {
     "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "introspect": "drizzle-kit introspect:pg",
     "generate": "drizzle-kit generate:pg",
     "migrate": "node src/db/migrate.js"

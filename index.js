@@ -10,8 +10,7 @@ import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
-import { addRole } from "./src/scripts/addRole.js"; 
-import { getHash, insertHash } from "./src/schemas/hashes.js";
+import { addRole } from "./src/scripts/addRole.js";  
 
 dotenv.config();
 
@@ -26,9 +25,7 @@ const client = new Client({
 });
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 const commands = [];
-const clientId = process.env.CLIENT_ID;
-let nieuwsChannel;
-let vraagChannel;
+const clientId = process.env.CLIENT_ID; 
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -41,14 +38,7 @@ client.once("ready", () => {
     status: "online",
   });
 
-  console.log("Ready!");
-  nieuwsChannel = client.channels.cache.find(
-    (channel) => channel.name === "nieuws"
-  );
-  vraagChannel = client.channels.cache.find(
-    (channel) => channel.name === "vraag-van-de-dag"
-  ); 
-    
+  console.log("Ready!"); 
 }); 
 
 client.login(process.env.TOKEN);
@@ -91,7 +81,7 @@ client.on("interactionCreate", async (interaction) => {
   if (!command) return;
 
   try {
-    await command.execute(interaction);
+    await command.execute(interaction, client);
   } catch (error) {
     console.error(error);
     await interaction.reply({

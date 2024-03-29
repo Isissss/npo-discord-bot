@@ -1,6 +1,6 @@
 # Database process (Supabase with DrizzleORM)
 
-Supabase is an open-source Firebase alternative that uses a Postgre database. We are using DrizzleORM to easily interact with our database
+Supabase is an open-source Firebase alternative that uses a PostgreSQL database. We are using DrizzleORM to easily interact with our database and utilize POWERFUL migrations
 
 To add a schema, follow these steps:
 - Create a file in `/src/schemas/PLURAL_SCHEMANAME.js`
