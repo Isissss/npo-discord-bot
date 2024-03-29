@@ -13,6 +13,7 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction, client) {
   const guild = interaction.guild;
   const guildSettings = await getGuildSettings(guild.id) || { guildId: guild.id }; 
+  let shouldCreateRoleMessages = false;
  
   //check if category NPO exists
   let category = guild.channels.cache.find(
@@ -70,6 +71,7 @@ export async function execute(interaction, client) {
         break;
       case "rollen":
         guildSettings.rolesChannelID = createdChannel.id;
+        shouldCreateRoleMessages = true;
         break;
     }
 
@@ -77,8 +79,8 @@ export async function execute(interaction, client) {
   
   createOrUpdateGuildSettings(guildSettings); 
 
-  const role = guild.roles.cache.find((role) => role.name === 'Binnenland');
-  if (!role) {
+   // if roles channel was created, create role messages
+  if (shouldCreateRoleMessages) { 
     await roles({ guild });
   }
 
