@@ -1,5 +1,5 @@
 {
-  "id": "7b1325cd-b427-4167-b590-d0eb7547835e",
+  "id": "13b96cbc-45db-4009-9ef0-9f989d970433",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "5",
   "dialect": "pg",
@@ -57,6 +57,40 @@
         "hash": {
           "name": "hash",
           "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "userScores": {
+      "name": "userScores",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userID": {
+          "name": "userID",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "guildID": {
+          "name": "guildID",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "score": {
+          "name": "score",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }
