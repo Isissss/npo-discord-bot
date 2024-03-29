@@ -1,10 +1,11 @@
 import { SlashCommandBuilder, EmbedBuilder } from '@discordjs/builders';
+import { increaseUserScore } from '../schemas/userScores.js';
 
 export const data = new SlashCommandBuilder()
     .setName('kennis')
     .setDescription('Vraag iets waar jij het antwoord niet op weet');
 
-export async function execute(interaction) {
+export async function execute(interaction) { 
 
     const embed = new EmbedBuilder()
         .setTitle('8ball')
@@ -13,8 +14,7 @@ export async function execute(interaction) {
         .setFooter({ text: `Commando uitgevoerd door ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp();
 
-    interaction.reply({embeds: [embed]});
-
+    interaction.reply({embeds: [embed]}); 
 }
 
 
