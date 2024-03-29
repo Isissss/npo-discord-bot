@@ -15,7 +15,7 @@ export const getGuildLeaderboard = async (guildID) => {
     return leaderboard
 }
 
-export const getUserScore = async (guildID, userID) => {
+export const getGuildUserScore = async (guildID, userID) => {
     const userScore = await db.select().from(userScores).where(and(eq(userScores.userID, userID), eq(userScores.guildID, guildID))) 
 
     return userScore[0]

@@ -26,13 +26,9 @@ const client = new Client({
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 const commands = [];
 const clientId = process.env.CLIENT_ID; 
+let nieuwsChannel;
+let vraagChannel;
 
-const nieuwsChannel = client.channels.cache.find(
-  (channel) => channel.name === "nieuws"
-);
-const vraagChannel = client.channels.cache.find(
-  (channel) => channel.name === "vraag-van-de-dag"
-);
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -46,6 +42,13 @@ client.once("ready", () => {
   });
 
   console.log("Ready!"); 
+
+  nieuwsChannel = client.channels.cache.find(
+    (channel) => channel.name === "nieuws"
+  );
+  vraagChannel = client.channels.cache.find(
+    (channel) => channel.name === "vraag-van-de-dag"
+  );
 }); 
 
 client.login(process.env.TOKEN);
