@@ -42,7 +42,7 @@ export async function execute(interaction) {
                 {
                     id: guild.roles.everyone,
                     allow: [],
-                    deny: [PermissionsBitField.Flags.SendMessage],
+                    deny: [PermissionsBitField.Flags.SendMessages],
                 },
             ],
         });

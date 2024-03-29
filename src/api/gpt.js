@@ -3,6 +3,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import OpenAI from "openai";
+import fs from "fs";
 
 
 dotenv.config();

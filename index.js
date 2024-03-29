@@ -25,7 +25,6 @@ const client = new Client({
 });
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 const commands = [];
-const clientId = process.env.CLIENT_ID; 
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -91,6 +90,23 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+
+    if (message.channel.name === "antwoord-van-de-dag") {
+        const answer = JSON.parse(fs.readFileSync('answer.json', 'utf-8'));
+        if (message.content.toLowerCase().includes(answer.toLowerCase())) {
+            //if user allows DM
+            message.author.send({ content: 'Gefeliciteerd, dat is het juiste antwoord! Je hebt een punt verdiend.', ephemeral: true });
+        }
+        else {
+            message.author.send({ content: 'Helaas, dat is niet het juiste antwoord. Probeer het nog een keer.', ephemeral: true });
+        }
+
+    }
+});
+
 function executeTimedScripts() {
   if (nieuwsChannel && vraagChannel) {
     checkTime(vraagChannel);
@@ -98,6 +114,6 @@ function executeTimedScripts() {
   }
 }
 
-//setInterval(executeTimedScripts, 60000);
+setInterval(executeTimedScripts, 60000);
 
 main();
