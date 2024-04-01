@@ -14,10 +14,11 @@ export async function execute(interaction) {
         .setFooter({ text: `Commando uitgevoerd door ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() })
         .setTimestamp()
         .addFields(
-            { name: '/8ball', value: 'Vraag de 8ball iets' },
-            { name: '/ping', value: 'Laat de ping zien' },
-            { name: '/server', value: 'Laat de server info zien' },
-            { name: '/user-info', value: 'Laat jouw info zien' },
+            { name: '/test', value: 'Vraag van de dag' },
+            { name: '/leaderboard', value: 'Laat de leaderboard zien' },
+            { name: '/lingo', value: 'Speel een ronde Lingo' },
+            { name: '/vraag-van-de-dag', value: 'Stel een vraag van de dag' },
+            { name: '/setup', value: 'Setup voor de NPO server bot'},
         );
 
     interaction.reply({embeds: [embed]});

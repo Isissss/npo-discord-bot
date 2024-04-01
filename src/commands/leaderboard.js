@@ -8,17 +8,41 @@ export const data = new SlashCommandBuilder()
     .setDescription('Laat de leaderboard zien'); 
 
 export async function execute(interaction) {
-    // database call, so defering it to be safe
-    await interaction.deferReply(); 
 
     const guildLeaderBoard = await getGuildLeaderboard(interaction.guild.id)
     console.log(guildLeaderBoard);
+    //set the leaderboard in the description so it can be displayed in the embed
+    const leaderboardDescription = guildLeaderBoard.map((user, index) => {
+        //add medal emoji to the first 3 users
+        if (index === 0) {
+            return `🥇 <@${user.userID}> - ${user.score}`;
+        }
+        if (index === 1) {
+            return `🥈 <@${user.userID}> - ${user.score}`;
+        }
+        if (index === 2) {
+            return `🥉 <@${user.userID}> - ${user.score}`;
+        }
+        return `${index + 1}. <@${user.userID}> - ${user.score}`;
 
- 
-    // TODO add leaderboard to embed or msg 
+    }).join('\n');
 
     const embed = new EmbedBuilder()
-    interaction.editReply({embeds: [embed]});
+        .setTitle('Leaderboard van de NPO Kennis Quiz!')
+        .setDescription(leaderboardDescription) // Set the string description
+        .setColor(0x5865F2)
+        .setTimestamp();
+    
+    interaction.reply({embeds: [embed]});
+
+}
+
+
+
+const asyncGetUser = async (userID, interaction) => {
+
+    const fetchedUser = await interaction.client.users.fetch(userID);
+    return fetchedUser.username;
 }
 
  

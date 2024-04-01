@@ -11,6 +11,7 @@ import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";   
+import { getGuildLeaderboard, getGuildUserScore, increaseUserScore } from "./src/schemas/userScores.js";
 
 dotenv.config();
 
@@ -108,8 +109,8 @@ client.on("messageCreate", (message) => {
     if (message.channel.name === "antwoord-van-de-dag") {
         const answer = JSON.parse(fs.readFileSync('answer.json', 'utf-8'));
         if (message.content.toLowerCase().includes(answer.toLowerCase())) {
-            //if user allows DM
             message.author.send({ content: 'Gefeliciteerd, dat is het juiste antwoord! Je hebt een punt verdiend.', ephemeral: true });
+            increaseUserScore(message.guild.id, message.author.id);
         }
         else {
             message.author.send({ content: 'Helaas, dat is niet het juiste antwoord. Probeer het nog een keer.', ephemeral: true });
