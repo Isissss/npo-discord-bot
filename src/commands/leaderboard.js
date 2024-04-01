@@ -38,12 +38,5 @@ export async function execute(interaction) {
 }
 
 
-
-const asyncGetUser = async (userID, interaction) => {
-
-    const fetchedUser = await interaction.client.users.fetch(userID);
-    return fetchedUser.username;
-}
-
  
 

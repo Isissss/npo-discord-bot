@@ -4,6 +4,7 @@ import {
   Routes,
   ActivityType,
   Collection,
+  EmbedBuilder,
 } from "discord.js";
 import dotenv from "dotenv";
 import { REST } from "@discordjs/rest";
@@ -11,7 +12,7 @@ import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";   
-import { getGuildLeaderboard, getGuildUserScore, increaseUserScore } from "./src/schemas/userScores.js";
+import {increaseUserScore } from "./src/schemas/userScores.js";
 
 dotenv.config();
 
@@ -118,6 +119,20 @@ client.on("messageCreate", (message) => {
 
     }
 });
+
+client.on('guildCreate', (g) => {
+  const channel = g.channels.cache.find(
+    (channel) => channel.name === "general"
+  );
+  if (channel) {
+    const embed = new EmbedBuilder()
+      .setTitle("Welkom bij de NPO bot!")
+      .setDescription("Hoi! Ik ben de bot van de NPO. Om te beginnen: Stuur mij de /setup command zodat ik allerlei leuke dingen voor jullie kan betekenen!")
+      .setColor(0x5865F2)
+      .setTimestamp();
+    channel.send({embeds: [embed]});
+  }
+})
 
 function executeTimedScripts() { 
   if (nieuwsChannel && vraagChannel) {
