@@ -22,7 +22,7 @@ export const getGuildUserScore = async (guildID, userID) => {
 }
 
 export const increaseUserScore = async (guildID, userID, scoreIncrease = 1) => {
-    const userScore = await getUserScore(guildID, userID)  
+    const userScore = await getGuildUserScore(guildID, userID)  
 
     if (!userScore) {
         return await db.insert(userScores).values({ guildID: guildID, userID: userID, score: scoreIncrease }).returning({ score: userScores.score })
