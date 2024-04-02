@@ -3,6 +3,7 @@
 import axios from 'axios';
 import dotenv from 'dotenv';
 import OpenAI from "openai";
+import fs from "fs";
 
 
 dotenv.config();
@@ -21,7 +22,7 @@ export async function gpt() {
                 },
                 {
                     role: "user",
-                    content: 'Geef mij een vraag van de dag. Graag over actueel nieuws of onderwerpen die actueel en aantrekkelijk voor jongeren zijn. Stuur hierbij ook het antwoord. Zorg ervoor dat de vraag en het antwoord niet te lang zijn en interessant voor jongeren. Stuur de response als json object terug.'
+                    content: 'Geef mij een vraag van de dag. Graag over actueel nieuws of onderwerpen die actueel en aantrekkelijk voor jongeren zijn. Stuur hierbij ook het antwoord. Zorg ervoor dat de vraag en het antwoord niet te lang zijn en interessant voor jongeren. Stuur de response als json object terug. Geef het antwoord in 1 woord.'
                 }
             ]
         }

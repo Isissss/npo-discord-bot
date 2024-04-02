@@ -2,6 +2,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import { Wordle } from 'discord-gamecord';
 import { wordList } from '../db/lingowords.js'; 
 
+
 const filteredWords = wordList.filter(word => word.length < 6);
 
 export const data = new SlashCommandBuilder()

@@ -4,13 +4,15 @@ import {
   Routes,
   ActivityType,
   Collection,
+  EmbedBuilder,
 } from "discord.js";
 import dotenv from "dotenv";
 import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
-import { checkTime } from "./src/scripts/checkTime.js";
-import { addRole } from "./src/scripts/addRole.js";
+// import { checkTime } from "./src/scripts/checkTime.js";
+import { addRole } from "./src/scripts/addRole.js";   
+import {increaseUserScore } from "./src/schemas/userScores.js";
 
 dotenv.config();
 
@@ -25,9 +27,10 @@ const client = new Client({
 });
 const rest = new REST({ version: "10" }).setToken(process.env.TOKEN);
 const commands = [];
-const clientId = process.env.CLIENT_ID;
+const clientId = process.env.CLIENT_ID; 
 let nieuwsChannel;
 let vraagChannel;
+
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -40,14 +43,16 @@ client.once("ready", () => {
     status: "online",
   });
 
-  console.log("Ready!");
+  console.log("Ready!"); 
+
   nieuwsChannel = client.channels.cache.find(
     (channel) => channel.name === "nieuws"
   );
   vraagChannel = client.channels.cache.find(
     (channel) => channel.name === "vraag-van-de-dag"
   );
-});
+}); 
+
 client.login(process.env.TOKEN);
 
 client.slashCommands = new Collection();
@@ -88,7 +93,7 @@ client.on("interactionCreate", async (interaction) => {
   if (!command) return;
 
   try {
-    await command.execute(interaction);
+    await command.execute(interaction, client);
   } catch (error) {
     console.error(error);
     await interaction.reply({
@@ -98,9 +103,40 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
-function executeTimedScripts() {
+
+client.on("messageCreate", (message) => {
+  if (message.author.bot) return;
+
+    if (message.channel.name === "antwoord-van-de-dag") {
+        const answer = JSON.parse(fs.readFileSync('answer.json', 'utf-8'));
+        if (message.content.toLowerCase().includes(answer.toLowerCase())) {
+            message.author.send({ content: 'Gefeliciteerd, dat is het juiste antwoord! Je hebt een punt verdiend.', ephemeral: true });
+            increaseUserScore(message.guild.id, message.author.id);
+        }
+        else {
+            message.author.send({ content: 'Helaas, dat is niet het juiste antwoord. Probeer het nog een keer.', ephemeral: true });
+        }
+
+    }
+});
+
+client.on('guildCreate', (g) => {
+  const channel = g.channels.cache.find(
+    (channel) => channel.name === "general"
+  );
+  if (channel) {
+    const embed = new EmbedBuilder()
+      .setTitle("Welkom bij de NPO bot!")
+      .setDescription("Hoi! Ik ben de bot van de NPO. Om te beginnen: Stuur mij de /setup command zodat ik allerlei leuke dingen voor jullie kan betekenen!")
+      .setColor(0x5865F2)
+      .setTimestamp();
+    channel.send({embeds: [embed]});
+  }
+})
+
+function executeTimedScripts() { 
   if (nieuwsChannel && vraagChannel) {
-    checkTime(vraagChannel);
+    // checkTime(vraagChannel);
     checkNews(nieuwsChannel);
   }
 }

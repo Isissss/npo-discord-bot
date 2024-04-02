@@ -1,27 +1,34 @@
-//create a command that executes the gpt function 
+//create a command that executes the gpt function
 
-import { SlashCommandBuilder, EmbedBuilder } from '@discordjs/builders';
-import { gpt } from '../api/gpt.js';
-
+import { SlashCommandBuilder, EmbedBuilder } from "@discordjs/builders";
+import { gpt } from "../api/gpt.js";
+import fs from "fs";
 
 export const data = new SlashCommandBuilder()
-    .setName('vraag')
-    .setDescription('Vraag van de dag');
+  .setName("test")
+  .setDescription("Vraag van de dag");
 
 export async function execute(interaction) {
-    const response = await gpt();
+  interaction.reply("Vraag van de dag wordt geladen...");
 
-    const embed = new EmbedBuilder()
-        .setTitle('Vraag van de dag')
-        .setColor(0xFFA500)
-        .setThumbnail('https://npokennis.nl/images/logo_npo_kennis.jpg')
+  const response = await gpt();
 
-        .setDescription(`${response.vraag}`)
-        .setTimestamp();
+  const embed = new EmbedBuilder()
+    .setTitle("Vraag van de dag")
+    .setColor(0xffa500)
+    .setThumbnail("https://npokennis.nl/images/logo_npo_kennis.jpg")
 
-    //send message no reply
-    interaction.reply({embeds: [embed]});
+    .setDescription(`${response.vraag}`)
+    .setTimestamp();
 
+  //send message no reply
+  interaction.followUp({ embeds: [embed] });
+  //remove the first reply
+  interaction.deleteReply();
+
+  fs.writeFileSync(
+    "answer.json",
+    JSON.stringify(response.antwoord, null, 2),
+    "utf-8"
+  );
 }
-
-    

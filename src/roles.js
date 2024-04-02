@@ -32,7 +32,7 @@ import {
     const embed = new EmbedBuilder()
       .setTitle("NPO Notificaties")
       .setDescription(
-        "Kies een rol om notificaties te ontvangen over de volgende onderwerpen: Oorlog, Binnenland, Buitenland, Sport, Vraag van de dag"
+        "Kies een rol om notificaties te ontvangen over de volgende onderwerpen: Binnenland, Buitenland, Sport, Vraag van de dag"
       )
       .setThumbnail("https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Npologo.svg/1200px-Npologo.svg.png")
       .setColor(0xffa500)

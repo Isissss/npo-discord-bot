@@ -1,4 +1,19 @@
 {
+  "name": "npokennis",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^1.6.8",
+    "discord-gamecord": "^4.4.2",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.30.4",
+    "fs": "^0.0.1-security",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.0",
+    "openai": "^4.29.2",
+    "postgres": "^3.4.4",
+    "puppeteer": "^22.6.0"
+  },
   "type": "module",
   "nodemonConfig": {
     "ignore": [
@@ -6,22 +21,13 @@
     ]
   },
   "scripts": {
-    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache",
+    "start": "nodemon index.js",
+    "introspect": "drizzle-kit introspect:pg",
+    "generate": "drizzle-kit generate:pg",
+    "migrate": "node src/db/migrate.js"
   },
-  "name": "npokennis",
-  "version": "1.0.0",
-  "dependencies": {
-    "axios": "^1.6.8",
-    "discord-gamecord": "^4.4.1",
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5",
-    "expo": "~50.0.11",
-    "expo-status-bar": "~1.11.1",
-    "nativewind": "^2.0.11",
-    "openai": "^4.29.2",
-    "puppeteer": "^22.6.0",
-    "react": "18.2.0",
-    "react-native": "0.73.4"
-  },
-  "private": true
+  "devDependencies": {
+    "drizzle-kit": "^0.20.14"
+  }
 }
