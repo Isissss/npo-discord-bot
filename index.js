@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
-import { checkTime } from "./src/scripts/checkTime.js";
+// import { checkTime } from "./src/scripts/checkTime.js";
 import { addRole } from "./src/scripts/addRole.js";   
 import {increaseUserScore } from "./src/schemas/userScores.js";
 
@@ -136,7 +136,7 @@ client.on('guildCreate', (g) => {
 
 function executeTimedScripts() { 
   if (nieuwsChannel && vraagChannel) {
-    checkTime(vraagChannel);
+    // checkTime(vraagChannel);
     checkNews(nieuwsChannel);
   }
 }

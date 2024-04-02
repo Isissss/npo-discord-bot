@@ -1,6 +1,6 @@
 import { pgTable, integer, serial, varchar } from "drizzle-orm/pg-core";
 import { db } from "../db/db.js";
-import { eq, and } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 export const userScores = pgTable('userScores', {
     id: serial('id').primaryKey(),
@@ -10,7 +10,7 @@ export const userScores = pgTable('userScores', {
 });
 
 export const getGuildLeaderboard = async (guildID) => {
-    const leaderboard = await db.select().from(userScores).where(eq(userScores.guildID, guildID)).orderBy(userScores.score, 'desc').limit(10)
+    const leaderboard = await db.select().from(userScores).where(eq(userScores.guildID, guildID)).orderBy(desc(userScores.score)).limit(10)
 
     return leaderboard
 }
