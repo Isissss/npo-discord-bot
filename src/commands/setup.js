@@ -33,10 +33,15 @@ export async function execute(interaction) {
       ephemeral: true,
     });
   } 
-    //check if channel 'nieuw' exists
+    //check if channel 'nieuws' exists
     const newsChannel = guild.channels.cache.find(
       (channel) => channel.name === "nieuws"
     );
+
+    const showsChannel = guild.channels.cache.find(
+      (channel) => channel.name === "shows"
+    );
+
     const rolesChannel = guild.channels.cache.find(
       (channel) => channel.name === "rollen"
     );
@@ -58,6 +63,25 @@ export async function execute(interaction) {
         ],
       });
     } 
+
+    if (!showsChannel) {
+      guild.channels.create({
+        name: "shows",
+        type: ChannelType.GuildText,
+        parent: category,
+        permissionOverwrites: [
+          {
+            id: guild.roles.everyone,
+            allow: [
+              PermissionsBitField.Flags.ViewChannel,
+              PermissionsBitField.Flags.ReadMessageHistory,
+            ],
+            deny: [PermissionsBitField.Flags.SendMessages],
+          },
+        ],
+      });
+    } 
+    
     if (!rolesChannel) {
       guild.channels.create({
         name: "rollen",

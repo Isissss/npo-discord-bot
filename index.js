@@ -10,6 +10,7 @@ import { REST } from "@discordjs/rest";
 import fs from "fs";
 import { checkNews } from "./src/scripts/checkNews.js";
 import { checkTime } from "./src/scripts/checkTime.js";
+import { checkTVShows } from "./src/scripts/checkshows.js";
 import { addRole } from "./src/scripts/addRole.js";
 
 dotenv.config();
@@ -28,6 +29,7 @@ const commands = [];
 const clientId = process.env.CLIENT_ID;
 let nieuwsChannel;
 let vraagChannel;
+let showsChannel;
 
 client.once("ready", () => {
   client.user.setPresence({
@@ -46,6 +48,9 @@ client.once("ready", () => {
   );
   vraagChannel = client.channels.cache.find(
     (channel) => channel.name === "vraag-van-de-dag"
+  );
+  showsChannel = client.channels.cache.find(
+    (channel) => channel.name === "shows"
   );
 });
 client.login(process.env.TOKEN);
@@ -102,6 +107,7 @@ function executeTimedScripts() {
   if (nieuwsChannel && vraagChannel) {
     checkTime(vraagChannel);
     checkNews(nieuwsChannel);
+    checkTVShows(showsChannel);
   }
 }
 
