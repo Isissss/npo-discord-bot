@@ -59,12 +59,6 @@ export async function execute(interaction, client) {
     switch (channel) {
       case "aankondigingen":
         guildSettings.announcementsChannelID = createdChannel.id;
-        if (!guildSettings.webhookURL || (guildSettings.webhookURL && !guildChannels.find((channel) => channel.id === guildSettings.webhookURL))) {
-          const webhook = await createdChannel.createWebhook({ name: 'NPO Notificaties', avatar: "https://utfs.io/f/d0f4942e-e3e1-4eae-af66-e1548fba337e-zezxew.png" });
-          if (webhook) {
-            guildSettings.webhookURL = webhook.url;
-          }
-        }
         break;
       case "nieuws":
         guildSettings.newsChannelID = createdChannel.id;
@@ -77,7 +71,13 @@ export async function execute(interaction, client) {
 
   }
 
-  createOrUpdateGuildSettings(guildSettings);
+  // check if webhook exists
+  if (!guildSettings.webhookURL || !await webhookIsValid(guildSettings.webhookURL)) {
+    const webhook = await createWebhook(guildSettings.announcementsChannelID, client);
+    guildSettings.webhookURL = webhook.url;
+  }
+
+  await createOrUpdateGuildSettings(guildSettings);
 
   // if roles channel was created, create role messages
   if (shouldCreateRoleMessages) {
@@ -85,5 +85,28 @@ export async function execute(interaction, client) {
   }
 
   interaction.reply('NPO setup is voltooid');
+}
+
+const webhookIsValid = async (webhookURL) => {
+  return fetch(webhookURL, {
+    method: 'GET',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }).then(response => response.json())
+    .then(({ url }) => {
+      if (url) return true
+
+      return false;
+    }).catch(() => {
+      return false;
+    });
+}
+
+const createWebhook = async (channelID, client) => {
+  const channel = client.channels.cache.get(channelID);
+  const webhook = await channel.createWebhook({ name: 'NPO Notificaties', avatar: "https://utfs.io/f/d0f4942e-e3e1-4eae-af66-e1548fba337e-zezxew.png" });
+  return webhook;
 }
 
