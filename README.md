@@ -1,3 +1,17 @@
+# Bot Setup
+
+To setup the Discord bot you'll need:
+- A Discord account
+- A Discord server where you have permissions to add bots
+- Node.js installed on your system
+
+After doing this, your ready to run the bot with these steps:
+
+- Create a Discord application and use it's ID in your env file (Keep this ID secret).
+- Install the node packages using `npm install`
+- After installing the packages the bot is ready to run using `node index.js`
+- Invite the bot with administrator rights to your server using the "OAuth2" tab in the Discord Developer Portal.
+
 # Database process (Supabase with DrizzleORM)
 
 Supabase is an open-source Firebase alternative that uses a PostgreSQL database. We are using DrizzleORM to easily interact with our database and utilize migrations
